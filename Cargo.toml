@@ -1,0 +1,11 @@
+[package]
+name = "gpc"
+version = "0.1.0"
+authors = ["Ulysse Carion <ulysse@ulysse.io>"]
+
+[dependencies]
+lazy_static = "0.2"
+
+[build-dependencies]
+bindgen = "0.26"
+gcc = "0.3"
