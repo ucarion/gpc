@@ -324,9 +324,68 @@ mod tests {
             .collect();
 
         let expected: Vec<Vec<(f64, f64)>> = vec![
-            vec![(1.5, 0.5), (1.0, 0.5), (1.0, 1.0), (0.5, 1.0), (0.5, 1.5), (1.5, 1.5)],
-            vec![(0.5, 0.5), (1.0, 0.5), (1.0, 0.0), (0.0, 0.0), (0.0, 1.0), (0.5, 1.0)],
+            vec![
+                (1.5, 0.5),
+                (1.0, 0.5),
+                (1.0, 1.0),
+                (0.5, 1.0),
+                (0.5, 1.5),
+                (1.5, 1.5),
+            ],
+            vec![
+                (0.5, 0.5),
+                (1.0, 0.5),
+                (1.0, 0.0),
+                (0.0, 0.0),
+                (0.0, 1.0),
+                (0.5, 1.0),
+            ],
         ];
         assert_eq!(expected, points);
+    }
+
+    #[test]
+    fn clip_tristrip() {
+        let mut polygon1 = Polygon::new();
+        polygon1.add_contour(
+            false,
+            &[
+                Vertex::new(1.0, 1.0),
+                Vertex::new(0.0, 1.0),
+                Vertex::new(0.0, 0.0),
+                Vertex::new(1.0, 0.0),
+            ],
+        );
+
+        let mut polygon2 = Polygon::new();
+        polygon2.add_contour(
+            false,
+            &[
+                Vertex::new(1.5, 1.5),
+                Vertex::new(0.5, 1.5),
+                Vertex::new(0.5, 0.5),
+                Vertex::new(1.5, 0.5),
+            ],
+        );
+
+        let tristrip = Tristrip::from_clipping(&polygon1, &polygon2, ClipOperation::ExclusiveOr);
+        let strips: Vec<Vec<_>> = tristrip
+            .triangle_strips()
+            .map(|strip| {
+                strip
+                    .vertices()
+                    .map(|vertex| (vertex.x(), vertex.y()))
+                    .collect()
+            })
+            .collect();
+
+        let expected: Vec<Vec<(f64, f64)>> =
+            vec![
+                vec![(0.0, 0.0), (1.0, 0.0), (0.0, 0.5), (1.0, 0.5)],
+                vec![(0.0, 0.5), (0.5, 0.5), (0.0, 1.0), (0.5, 1.0)],
+                vec![(1.0, 0.5), (1.5, 0.5), (1.0, 1.0), (1.5, 1.0)],
+                vec![(0.5, 1.0), (1.5, 1.0), (0.5, 1.5), (1.5, 1.5)],
+            ];
+        assert_eq!(expected, strips);
     }
 }
