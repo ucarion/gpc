@@ -2,6 +2,9 @@
 name = "gpc"
 description = "Bindings to the General Polygon Clipper (GPC) library"
 version = "0.1.0"
+documentation = "https://docs.rs/gpc"
+repository = "https://github.com/ucarion/gpc"
+homepage = "https://github.com/ucarion/gpc"
 authors = ["Ulysse Carion <ulysse@ulysse.io>"]
 license = "MIT"
 
