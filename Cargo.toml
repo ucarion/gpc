@@ -1,7 +1,9 @@
 [package]
 name = "gpc"
+description = "Bindings to the General Polygon Clipper (GPC) library"
 version = "0.1.0"
 authors = ["Ulysse Carion <ulysse@ulysse.io>"]
+license = "MIT"
 
 [dependencies]
 lazy_static = "0.2"
